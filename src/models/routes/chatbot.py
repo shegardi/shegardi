@@ -69,3 +69,42 @@ return jsonifyl{
 ' response':
 bot _response! status': 'success'
 }), 200
+except Exception as e:
+return jsonifyl{
+'response' : ' عذراً ، حدث
+خطأ في النظام . يرجى المحاولة مرة
+' . أخرى
+'error': str (e)
+}) , 500
+@chatbot_bp.route(' /entities',
+methods=[ 'GET' ]) def get entities () :
+try:
+entities =
+GovernmentEntity query.all ()
+return
+jsonify(lentity.to_dict () for entity
+in entities]),
+200
+except Exception as e:
+return jsonify({'error':
+str (e)}), 500
+@chatbot bp. route (' /announcements' methods=[ 'GET' ])
+def get_announcements ( ):
+try:
+days =
+request.args.get get ('days', 7, type=int)
+start_date = date. today () -
+timedelta (days=days)
+announcements =
+Announcement. query. filter (
+Announcement. announcement_date ›= start_date,
+Announcement. announcement_date <=
+date. today ( )
+) . order_by (Announcement. anno
+uncement_date. desc ()) •all ( )
+return
+jsonify( [announcement.to_dict() for
+announcement in announcements]), 200
+except Exception as e:
+return jsonify({'error':
+str (e)}) , 500
